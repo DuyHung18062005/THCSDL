@@ -35,7 +35,7 @@ public class DatSanService {
         // Kiểm tra tồn tại sân, user, khung giờ
         San san = sanRepo.findById(sanId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sân"));
-        User user = userRepo.findById(Math.toIntExact(userId))
+        User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
         KhungGioCoDinh kg = kgRepo.findById(kgCoDinhId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy khung giờ"));

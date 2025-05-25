@@ -5,14 +5,18 @@ import Main.dto.request.DatSanRequest;
 import Main.dto.request.SanDTO;
 import Main.dto.request.SanInfoDTO;
 import Main.entity.San;
+import Main.entity.User;
+import Main.repository.UserRepository;
 import Main.service.DatSanService;
 import Main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -22,6 +26,9 @@ public class UserController {
     private UserService userService;
     @Autowired
     private DatSanService datSanService;
+    @Autowired
+    private UserRepository userRepository;
+
     // Lấy tất cả sân
     @GetMapping("/all")
     public List<SanInfoDTO> getAllSan() {
@@ -71,4 +78,13 @@ public class UserController {
 
     // Thanh toán
 
+    @GetMapping("/role/user")
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<User> users = userRepository.findByVaiTro("USER");
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi khi lấy danh sách user: " + e.getMessage());
+        }
+    }
 }

@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<UserDTO> getAllUser() {
         try {
-            List<User> users = userRepository.findAll();
+            List<User> users = userRepository.findByVaiTro("USER");
             return users.stream()
                     .map(user -> new UserDTO(user.getHoTen(), user.getId(), user.getSoDienThoai()))
                     .toList();

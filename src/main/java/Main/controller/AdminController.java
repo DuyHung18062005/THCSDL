@@ -1,19 +1,22 @@
 package Main.controller;
 
 import Main.dto.request.*;
+import Main.dto.response.UserResponseDTO;
 import Main.entity.Chinhanh;
 import Main.entity.San;
 import Main.entity.User;
 import Main.service.AdminService;
 import Main.service.SanService;
+import Main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class AdminController {
 
     @Autowired
@@ -22,13 +25,29 @@ public class AdminController {
     @Autowired
     private SanService sanService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // QUẢN LÝ NGƯỜI DÙNG
 
-    // Xem danh sách tất cả user
+    // Xem danh sách tất cả user có vai trò USER
     @GetMapping("/users")
-    public List<UserDTO> getAllUsers() {
-
-        return adminService.getAllUser();
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<User> users = userRepository.findByVaiTro("USER");
+            List<UserResponseDTO> userDTOs = users.stream()
+                .map(user -> new UserResponseDTO(
+                    user.getId(),
+                    user.getHoTen(),
+                    user.getEmail(),
+                    user.getSoDienThoai(),
+                    user.getVaiTro()
+                ))
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(userDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Lỗi khi lấy danh sách user: " + e.getMessage());
+        }
     }
 
     // Thêm user mới
