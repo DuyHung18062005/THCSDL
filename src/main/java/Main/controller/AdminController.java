@@ -11,6 +11,7 @@ import Main.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import Main.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,9 @@ public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     // QUẢN LÝ NGƯỜI DÙNG
 
@@ -93,5 +97,34 @@ public class AdminController {
     @GetMapping("/quanlydat/{id}")
     public ChiTietDatSanDTO getDetailDatSan(@PathVariable Long id) {
         return adminService.getDetailDatSan(id);
+    }
+
+
+    // Những phần của user admin có thể thực hiện
+    // 1. Xem tất cả sân
+    @GetMapping("/san")
+    public List<SanInfoDTO> getAllSan() {
+        return userService.getAllSan();
+    }
+    // 2. Xem tất cả chi nhánh
+    @GetMapping("/chinhanh")
+    public List<ChiNhanhDTO> getAllChiNhanh() {
+        return userService.getAllChiNhanh();
+    }
+    // 3. Lọc sân theo khu vực (chi nhánh ID)
+    @GetMapping("/khuvuc")
+    public List<SanInfoDTO> getKhuVuc(@RequestParam Long chiNhanhId) {
+        return userService.filterSanByKhuVuc(chiNhanhId);
+    }
+    // 4. Lọc sân theo tên
+    @GetMapping("/ten")
+    public San getTen(@RequestParam String ten) {
+        return userService.filterSanByTen(ten);
+    }
+    //5. Xem chi tiết sân
+
+    @GetMapping("/{id}")
+    public SanDTO getSan(@PathVariable Long id) {
+        return userService.getSanInfoById(id);
     }
 }
