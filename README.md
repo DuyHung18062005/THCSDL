@@ -61,6 +61,6 @@ This project builds a football field management system, supporting administrator
 
 ## 📞 Contact
 
-For any questions or contributions, please contact via [GitHub Issues](https://github.com/ZuyHung05/THCSDL/issues).
+For any questions or contributions, please contact via [Gmail](duyhungwork05@gmail.com).
 
 ---
